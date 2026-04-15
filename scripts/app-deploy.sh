@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 # =============================================================================
 # 앱 배포 스크립트 (반복 실행)
-# .env 파일 기반으로 Docker 이미지 빌드 → K8s Secret 생성 → Kustomize 배포
-# 사전 조건: deploy.sh 로 인프라(Docker, k3s, Ingress) 설치 완료
+# .env 파일 기반으로 Docker 이미지 빌드 → 로컬 레지스트리 push → K8s 배포
+# 사전 조건: deploy.sh 로 인프라(Docker, Registry, k3s, Ingress) 설치 완료
 # =============================================================================
 set -euo pipefail
 
@@ -24,8 +24,10 @@ if [[ $EUID -ne 0 ]]; then
 fi
 
 # ── 설정 ──
+REGISTRY="${REGISTRY:-localhost:5000}"
 IMAGE_NAME="rust-backend"
 IMAGE_TAG="${IMAGE_TAG:-latest}"
+IMAGE="${REGISTRY}/${IMAGE_NAME}:${IMAGE_TAG}"
 NAMESPACE="rust-backend"
 DEPLOY_ENV="${DEPLOY_ENV:-prod}"  # dev | staging | prod
 PROJECT_DIR="$(cd "$(dirname "$0")/.." && pwd)"
@@ -46,19 +48,18 @@ kubectl cluster-info &>/dev/null 2>&1 || err "Kubernetes 클러스터에 연결�
 echo ""
 echo "  ┌────────────────────────────────────────┐"
 echo "  │  앱 배포 스크립트                      │"
-echo "  │  Env: ${DEPLOY_ENV}  │  Image: ${IMAGE_NAME}:${IMAGE_TAG}  │"
-echo "  │  .env: ${ENV_FILE}"
+echo "  │  Env: ${DEPLOY_ENV}  │  Image: ${IMAGE}"
 echo "  └────────────────────────────────────────┘"
 echo ""
 
 # =============================================================================
-# 1. Docker 이미지 빌드
+# 1. Docker 이미지 빌드 & 레지스트리 push
 # =============================================================================
-step "1/4 Docker 이미지 빌드"
+step "1/4 Docker 이미지 빌드 & push"
 cd "$PROJECT_DIR"
-docker build -t "${IMAGE_NAME}:${IMAGE_TAG}" .
-docker save "${IMAGE_NAME}:${IMAGE_TAG}" | k3s ctr images import -
-log "이미지 빌드 & import 완료: ${IMAGE_NAME}:${IMAGE_TAG}"
+docker build -t "${IMAGE}" .
+docker push "${IMAGE}"
+log "이미지 push 완료: ${IMAGE}"
 
 # =============================================================================
 # 2. Namespace 생성
@@ -98,19 +99,11 @@ echo -e "${GREEN}  앱 배포 완료!${NC}"
 echo -e "${GREEN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
 echo ""
 echo "  환경: ${DEPLOY_ENV}"
+echo "  이미지: ${IMAGE}"
 echo "  네임스페이스: ${NAMESPACE}"
 echo ""
 echo "  ── 확인 명령어 ──"
 echo "  kubectl -n ${NAMESPACE} get pods"
 echo "  kubectl -n ${NAMESPACE} get svc"
 echo "  kubectl -n ${NAMESPACE} logs -l app.kubernetes.io/name=rust-backend -f"
-echo ""
-echo "  ── 로컬 테스트 ──"
-NODE_PORT=$(kubectl -n "${NAMESPACE}" get svc rust-backend-service -o jsonpath='{.spec.ports[0].nodePort}' 2>/dev/null || echo "N/A")
-if [[ "${NODE_PORT}" != "N/A" ]]; then
-  echo "  curl http://localhost:${NODE_PORT}/api/v1/health"
-else
-  echo "  kubectl -n ${NAMESPACE} port-forward svc/rust-backend-service 8080:80 &"
-  echo "  curl http://localhost:8080/api/v1/health"
-fi
 echo ""

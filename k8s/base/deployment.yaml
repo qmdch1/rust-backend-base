@@ -19,8 +19,8 @@ spec:
     spec:
       containers:
         - name: rust-backend
-          image: rust-backend:latest
-          imagePullPolicy: IfNotPresent
+          image: localhost:5000/rust-backend:latest
+          imagePullPolicy: Always
           ports:
             - name: http
               containerPort: 8080
