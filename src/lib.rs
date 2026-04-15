@@ -13,7 +13,7 @@ use crate::config::Config;
 
 #[derive(Clone)]
 pub struct AppState {
-    pub db: PgPool,
-    pub redis: db::RedisPool,
+    pub db: Option<PgPool>,
+    pub redis: Option<db::RedisPool>,
     pub config: Config,
 }

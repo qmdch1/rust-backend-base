@@ -49,8 +49,16 @@ uuid = { version = "1", features = ["v4", "serde"] }
 thiserror = "2"
 anyhow = "1"
 
+# API Documentation (Swagger) - only included with "swagger" feature
+utoipa = { version = "5", features = ["axum_extras", "chrono", "uuid"], optional = true }
+utoipa-swagger-ui = { version = "9", features = ["axum"], optional = true }
+
 # CORS / Security
 rand = "0.9"
+
+[features]
+default = ["swagger"]
+swagger = ["utoipa", "utoipa-swagger-ui"]
 
 [dev-dependencies]
 # Testing

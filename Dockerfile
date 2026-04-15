@@ -8,7 +8,7 @@ COPY Cargo.toml Cargo.lock ./
 COPY src/ ./src/
 COPY migrations/ ./migrations/
 
-RUN cargo build --release
+RUN cargo build --release --no-default-features
 
 # Runtime stage
 FROM alpine:3.19

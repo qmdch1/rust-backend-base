@@ -28,12 +28,28 @@ async fn main() -> anyhow::Result<()> {
         config.server.environment
     );
 
-    // Initialize database
-    let db_pool = db::postgres::init_pool(&config.database).await?;
-    db::postgres::run_migrations(&db_pool).await?;
+    // Initialize database (optional - server starts without it)
+    let db_pool = match db::postgres::init_pool(&config.database).await {
+        Ok(pool) => {
+            if let Err(e) = db::postgres::run_migrations(&pool).await {
+                tracing::warn!("Failed to run migrations: {}", e);
+            }
+            Some(pool)
+        }
+        Err(e) => {
+            tracing::warn!("PostgreSQL not available: {} — starting without database", e);
+            None
+        }
+    };
 
-    // Initialize Redis
-    let redis_pool = db::redis::init_pool(&config.redis).await?;
+    // Initialize Redis (optional - server starts without it)
+    let redis_pool = match db::redis::init_pool(&config.redis).await {
+        Ok(pool) => Some(pool),
+        Err(e) => {
+            tracing::warn!("Redis not available: {} — starting without cache", e);
+            None
+        }
+    };
 
     // Build application state
     let state = AppState {
@@ -56,6 +72,7 @@ async fn main() -> anyhow::Result<()> {
         config.server.port,
     );
     tracing::info!("Listening on {}", addr);
+    tracing::info!("Swagger UI: http://{}:{}/swagger-ui/", config.server.host, config.server.port);
 
     let listener = TcpListener::bind(addr).await?;
     axum::serve(listener, app)
