@@ -2,9 +2,8 @@
 name = "rust-backend-base"
 version = "0.1.0"
 edition = "2024"
-license = "MIT"
 description = "Production-ready Rust backend base with industry-standard stack"
-repository = "https://github.com/pskim4354/rust-backend-base"
+repository = "https://github.com/qmdch1/rust-backend-base"
 keywords = ["axum", "backend", "rest-api", "postgresql", "boilerplate"]
 
 [dependencies]
