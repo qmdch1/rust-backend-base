@@ -5,8 +5,6 @@ namespace: rust-backend
 
 resources:
   - namespace.yaml
-  - configmap.yaml
-  - secret.yaml
   - postgres.yaml
   - valkey.yaml
   - deployment.yaml

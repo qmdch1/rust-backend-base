@@ -25,19 +25,6 @@ patches:
         path: /spec/maxReplicas
         value: 5
   - target:
-      kind: ConfigMap
-      name: rust-backend-config
-    patch: |
-      - op: replace
-        path: /data/RUST_ENV
-        value: staging
-      - op: replace
-        path: /data/RUST_LOG
-        value: rust_backend_base=info,tower_http=info
-      - op: replace
-        path: /data/CORS_ALLOWED_ORIGINS
-        value: https://staging.yourdomain.com
-  - target:
       kind: Ingress
       name: rust-backend-ingress
     patch: |

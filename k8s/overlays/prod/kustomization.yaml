@@ -37,19 +37,6 @@ patches:
         path: /spec/maxReplicas
         value: 20
   - target:
-      kind: ConfigMap
-      name: rust-backend-config
-    patch: |
-      - op: replace
-        path: /data/DATABASE_MAX_CONNECTIONS
-        value: "30"
-      - op: replace
-        path: /data/DATABASE_MIN_CONNECTIONS
-        value: "5"
-      - op: replace
-        path: /data/CORS_ALLOWED_ORIGINS
-        value: https://yourdomain.com
-  - target:
       kind: Ingress
       name: rust-backend-ingress
     patch: |
