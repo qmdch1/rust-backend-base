@@ -75,6 +75,23 @@ Jenkins 설치 후 `sudo ./deploy.sh`를 다시 실행하면 적용됩니다.
 
 Git push → Jenkins가 자동으로 빌드/테스트/배포합니다.
 
+## Cargo Commands
+
+| 명령어 | 설명 |
+|--------|------|
+| `cargo run` | 서버 실행 (개발 모드) |
+| `cargo build --release` | 릴리즈 빌드 |
+| `cargo test` | 전체 테스트 실행 |
+| `cargo test --test hello_test` | 특정 테스트 파일만 실행 |
+| `cargo check` | 컴파일 체크 (빌드 없이 에러 확인) |
+| `cargo clippy` | 린트 (코드 품질 검사) |
+| `cargo fmt` | 코드 포맷팅 |
+| `cargo watch -x run` | 파일 변경 시 자동 재시작 |
+| `cargo watch -x test` | 파일 변경 시 자동 테스트 |
+| `sqlx migrate add <name>` | 마이그레이션 생성 |
+| `sqlx migrate run` | 마이그레이션 실행 |
+| `sqlx migrate revert` | 마이그레이션 롤백 |
+
 ## Tech Stack
 
 | 영역 | 기술 | 설명 |
