@@ -8,7 +8,7 @@ resources:
   - configmap.yaml
   - secret.yaml
   - postgres.yaml
-  - redis.yaml
+  - valkey.yaml
   - deployment.yaml
   - service.yaml
   - ingress.yaml

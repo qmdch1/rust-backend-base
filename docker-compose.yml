@@ -18,19 +18,19 @@ services:
       timeout: 5s
       retries: 5
 
-  redis:
-    image: redis:7-alpine
-    container_name: rust_backend_redis
+  valkey:
+    image: valkey/valkey:8-alpine
+    container_name: rust_backend_valkey
     ports:
       - "6379:6379"
     volumes:
-      - redis_data:/data
+      - valkey_data:/data
     healthcheck:
-      test: ["CMD", "redis-cli", "ping"]
+      test: ["CMD", "valkey-cli", "ping"]
       interval: 5s
       timeout: 5s
       retries: 5
 
 volumes:
   postgres_data:
-  redis_data:
+  valkey_data:

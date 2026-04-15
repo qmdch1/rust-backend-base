@@ -45,7 +45,7 @@ rust-backend-base/
 │   │   ├── ingress.yaml        # Nginx Ingress + TLS
 │   │   ├── hpa.yaml            # HorizontalPodAutoscaler
 │   │   ├── postgres.yaml       # PostgreSQL (Deployment + PVC + Service)
-│   │   └── redis.yaml          # Redis (Deployment + Service)
+│   │   └── valkey.yaml          # Redis (Deployment + Service)
 │   └── overlays/               # 환경별 오버라이드
 │       ├── dev/                # 개발 (1 replica, debug logging)
 │       ├── staging/            # 스테이징 (2 replicas)
