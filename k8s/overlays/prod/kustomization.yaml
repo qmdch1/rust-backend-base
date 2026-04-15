@@ -1,0 +1,61 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: rust-backend-prod
+
+resources:
+  - ../../base
+
+patches:
+  - target:
+      kind: Deployment
+      name: rust-backend
+    patch: |
+      - op: replace
+        path: /spec/replicas
+        value: 3
+      - op: replace
+        path: /spec/template/spec/containers/0/resources/requests/cpu
+        value: 200m
+      - op: replace
+        path: /spec/template/spec/containers/0/resources/requests/memory
+        value: 256Mi
+      - op: replace
+        path: /spec/template/spec/containers/0/resources/limits/cpu
+        value: "1"
+      - op: replace
+        path: /spec/template/spec/containers/0/resources/limits/memory
+        value: 512Mi
+  - target:
+      kind: HorizontalPodAutoscaler
+      name: rust-backend-hpa
+    patch: |
+      - op: replace
+        path: /spec/minReplicas
+        value: 3
+      - op: replace
+        path: /spec/maxReplicas
+        value: 20
+  - target:
+      kind: ConfigMap
+      name: rust-backend-config
+    patch: |
+      - op: replace
+        path: /data/DATABASE_MAX_CONNECTIONS
+        value: "30"
+      - op: replace
+        path: /data/DATABASE_MIN_CONNECTIONS
+        value: "5"
+      - op: replace
+        path: /data/CORS_ALLOWED_ORIGINS
+        value: https://yourdomain.com
+  - target:
+      kind: Ingress
+      name: rust-backend-ingress
+    patch: |
+      - op: replace
+        path: /spec/rules/0/host
+        value: api.yourdomain.com
+      - op: replace
+        path: /spec/tls/0/hosts/0
+        value: api.yourdomain.com

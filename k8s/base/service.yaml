@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: rust-backend-service
+  namespace: rust-backend
+  labels:
+    app.kubernetes.io/name: rust-backend
+spec:
+  type: ClusterIP
+  selector:
+    app.kubernetes.io/name: rust-backend
+  ports:
+    - name: http
+      port: 80
+      targetPort: http
+      protocol: TCP

@@ -1,0 +1,65 @@
+[package]
+name = "rust-backend-base"
+version = "0.1.0"
+edition = "2024"
+license = "MIT"
+description = "Production-ready Rust backend base with industry-standard stack"
+repository = "https://github.com/pskim4354/rust-backend-base"
+keywords = ["axum", "backend", "rest-api", "postgresql", "boilerplate"]
+
+[dependencies]
+# Web Framework
+axum = { version = "0.8", features = ["macros"] }
+axum-extra = { version = "0.10", features = ["typed-header"] }
+tower = { version = "0.5", features = ["full"] }
+tower-http = { version = "0.6", features = ["cors", "trace", "compression-gzip", "limit"] }
+hyper = { version = "1" }
+tokio = { version = "1", features = ["full"] }
+
+# Serialization
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+
+# Database (PostgreSQL)
+sqlx = { version = "0.8", features = ["runtime-tokio-rustls", "postgres", "chrono", "uuid", "migrate"] }
+
+# Redis
+redis = { version = "1", features = ["tokio-comp", "connection-manager"] }
+
+# Configuration
+dotenvy = "0.15"
+
+# Authentication
+jsonwebtoken = "10"
+argon2 = "0.5"
+
+# Logging / Tracing
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter", "json"] }
+
+# Validation
+validator = { version = "0.20", features = ["derive"] }
+
+# Date/Time
+chrono = { version = "0.4", features = ["serde"] }
+
+# UUID
+uuid = { version = "1", features = ["v4", "serde"] }
+
+# Error Handling
+thiserror = "2"
+anyhow = "1"
+
+# CORS / Security
+rand = "0.9"
+
+[dev-dependencies]
+# Testing
+reqwest = { version = "0.12", features = ["json"] }
+tokio-test = "0.4"
+
+[profile.release]
+opt-level = 3
+lto = true
+codegen-units = 1
+strip = true

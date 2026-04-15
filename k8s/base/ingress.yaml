@@ -1,0 +1,25 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: rust-backend-ingress
+  namespace: rust-backend
+  annotations:
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    cert-manager.io/cluster-issuer: letsencrypt-prod  # Requires cert-manager installed
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: api.yourdomain.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: rust-backend-service
+                port:
+                  name: http
+  tls:
+    - hosts:
+        - api.yourdomain.com
+      secretName: rust-backend-tls

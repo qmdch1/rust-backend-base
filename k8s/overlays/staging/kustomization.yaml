@@ -1,0 +1,49 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: rust-backend-staging
+
+resources:
+  - ../../base
+
+patches:
+  - target:
+      kind: Deployment
+      name: rust-backend
+    patch: |
+      - op: replace
+        path: /spec/replicas
+        value: 2
+  - target:
+      kind: HorizontalPodAutoscaler
+      name: rust-backend-hpa
+    patch: |
+      - op: replace
+        path: /spec/minReplicas
+        value: 2
+      - op: replace
+        path: /spec/maxReplicas
+        value: 5
+  - target:
+      kind: ConfigMap
+      name: rust-backend-config
+    patch: |
+      - op: replace
+        path: /data/RUST_ENV
+        value: staging
+      - op: replace
+        path: /data/RUST_LOG
+        value: rust_backend_base=info,tower_http=info
+      - op: replace
+        path: /data/CORS_ALLOWED_ORIGINS
+        value: https://staging.yourdomain.com
+  - target:
+      kind: Ingress
+      name: rust-backend-ingress
+    patch: |
+      - op: replace
+        path: /spec/rules/0/host
+        value: api-staging.yourdomain.com
+      - op: replace
+        path: /spec/tls/0/hosts/0
+        value: api-staging.yourdomain.com
