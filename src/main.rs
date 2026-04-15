@@ -3,10 +3,23 @@ use std::net::SocketAddr;
 use rust_backend_base::{config::Config, db, middleware, routes, AppState};
 use tokio::net::TcpListener;
 
-#[tokio::main]
-async fn main() -> anyhow::Result<()> {
-    // Load configuration
+fn main() -> anyhow::Result<()> {
     let config = Config::from_env()?;
+
+    let runtime = if config.server.environment.is_production() {
+        tokio::runtime::Builder::new_multi_thread()
+            .enable_all()
+            .build()?
+    } else {
+        tokio::runtime::Builder::new_current_thread()
+            .enable_all()
+            .build()?
+    };
+
+    runtime.block_on(run(config))
+}
+
+async fn run(config: Config) -> anyhow::Result<()> {
 
     // Initialize tracing
     let env_filter = if config.server.environment.is_production() {
