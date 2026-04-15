@@ -60,19 +60,19 @@ impl UserService {
         let current = Self::find_by_id(pool, id).await?;
 
         // Check email uniqueness if changing
-        if let Some(ref new_email) = req.email {
-            if new_email != &current.email {
-                let exists = sqlx::query_scalar::<_, bool>(
-                    "SELECT EXISTS(SELECT 1 FROM users WHERE email = $1 AND id != $2)",
-                )
-                .bind(new_email)
-                .bind(id)
-                .fetch_one(pool)
-                .await?;
+        if let Some(ref new_email) = req.email
+            && new_email != &current.email
+        {
+            let exists = sqlx::query_scalar::<_, bool>(
+                "SELECT EXISTS(SELECT 1 FROM users WHERE email = $1 AND id != $2)",
+            )
+            .bind(new_email)
+            .bind(id)
+            .fetch_one(pool)
+            .await?;
 
-                if exists {
-                    return Err(AppError::Conflict("Email already registered".to_string()));
-                }
+            if exists {
+                return Err(AppError::Conflict("Email already registered".to_string()));
             }
         }
 
