@@ -1,9 +1,12 @@
+# {% capture body %}
 [package]
 name = "rust-backend-base"
 version = "0.1.0"
 edition = "2024"
 description = "Production-ready Rust backend base with industry-standard stack"
+# {% if false %}
 repository = "https://github.com/qmdch1/rust-backend-base"
+# {% endif %}
 keywords = ["axum", "backend", "rest-api", "postgresql", "boilerplate"]
 
 [dependencies]
@@ -66,3 +69,4 @@ opt-level = 3
 lto = true
 codegen-units = 1
 strip = true
+# {% endcapture %}{{ body | replace: "Rust Backend Base", project-name | replace: "rust-backend-base", project-name | replace: "rust_backend_base", crate_name | replace: "rust-backend", project-name | replace: "rust_backend", crate_name }}

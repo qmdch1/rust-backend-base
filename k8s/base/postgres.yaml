@@ -1,3 +1,4 @@
+# {% capture body %}
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
@@ -88,3 +89,4 @@ metadata:
 type: Opaque
 stringData:
   POSTGRES_PASSWORD: "<CHANGE-THIS-PASSWORD>"
+# {% endcapture %}{{ body | replace: "Rust Backend Base", project-name | replace: "rust-backend-base", project-name | replace: "rust_backend_base", crate_name | replace: "rust-backend", project-name | replace: "rust_backend", crate_name }}

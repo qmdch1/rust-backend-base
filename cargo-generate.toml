@@ -1,0 +1,44 @@
+# cargo-generate template settings: `cargo generate qmdch1/rust-backend-base`
+#
+# The repository stays a normal, buildable project. Files that contain the project
+# name are wrapped in two comment lines:
+#   first line: `# {% capture body %}`   (or `//` / `<!-- -->` depending on the file type)
+#   last line:  `# {% endcapture %}{{ body | replace: "Rust Backend Base", project-name | ... }}`
+# Cargo, Docker, kubectl and Jenkins only see comments, while cargo-generate renders the
+# file with the original names replaced (copy the full filter chain from an existing file):
+#   Rust Backend Base / rust-backend-base / rust-backend -> {{project-name}}
+#   rust_backend_base / rust_backend -> {{crate_name}}
+# When you add the project name to another file, wrap that file the same way and list it below.
+
+[template]
+cargo_generate_version = ">=0.23.0"
+# Only these files are rendered by Liquid; everything else is copied verbatim
+# (deploy.sh, for example, contains Docker's own `{{.Names}}` format string).
+include = [
+    "Cargo.toml",
+    ".env.example",
+    "Dockerfile",
+    "Jenkinsfile",
+    "README.md",
+    "docker-compose.yml",
+    "scripts/app-deploy.sh",
+    "src/main.rs",
+    "src/config/mod.rs",
+    "src/routes/mod.rs",
+    "tests/hello_test.rs",
+    "k8s/base/configmap.yaml",
+    "k8s/base/deployment.yaml",
+    "k8s/base/hpa.yaml",
+    "k8s/base/ingress.yaml",
+    "k8s/base/kustomization.yaml",
+    "k8s/base/namespace.yaml",
+    "k8s/base/postgres.yaml",
+    "k8s/base/secret.yaml",
+    "k8s/base/service.yaml",
+    "k8s/base/valkey.yaml",
+    "k8s/overlays/dev/kustomization.yaml",
+    "k8s/overlays/prod/kustomization.yaml",
+    "k8s/overlays/staging/kustomization.yaml",
+]
+# Template-only file; not needed in generated projects.
+ignore = ["cargo-generate.toml", "target"]

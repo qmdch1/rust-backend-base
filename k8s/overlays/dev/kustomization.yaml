@@ -1,3 +1,4 @@
+# {% capture body %}
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
@@ -46,3 +47,4 @@ patches:
       - op: replace
         path: /spec/tls/0/hosts/0
         value: api-dev.yourdomain.com
+# {% endcapture %}{{ body | replace: "Rust Backend Base", project-name | replace: "rust-backend-base", project-name | replace: "rust_backend_base", crate_name | replace: "rust-backend", project-name | replace: "rust_backend", crate_name }}

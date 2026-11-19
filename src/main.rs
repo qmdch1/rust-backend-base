@@ -1,3 +1,4 @@
+// {% capture body %}
 use std::net::SocketAddr;
 
 use rust_backend_base::{config::Config, db, middleware, routes, AppState};
@@ -119,3 +120,4 @@ async fn shutdown_signal() {
         _ = terminate => tracing::info!("Received SIGTERM, starting graceful shutdown"),
     }
 }
+// {% endcapture %}{{ body | replace: "Rust Backend Base", project-name | replace: "rust-backend-base", project-name | replace: "rust_backend_base", crate_name | replace: "rust-backend", project-name | replace: "rust_backend", crate_name }}

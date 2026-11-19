@@ -1,3 +1,4 @@
+# {% capture body %}
 apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
@@ -23,3 +24,4 @@ spec:
         target:
           type: Utilization
           averageUtilization: 80
+# {% endcapture %}{{ body | replace: "Rust Backend Base", project-name | replace: "rust-backend-base", project-name | replace: "rust_backend_base", crate_name | replace: "rust-backend", project-name | replace: "rust_backend", crate_name }}

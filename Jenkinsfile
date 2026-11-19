@@ -1,3 +1,4 @@
+// {% capture body %}
 pipeline {
     agent any
 
@@ -79,3 +80,4 @@ pipeline {
         }
     }
 }
+// {% endcapture %}{{ body | replace: "Rust Backend Base", project-name | replace: "rust-backend-base", project-name | replace: "rust_backend_base", crate_name | replace: "rust-backend", project-name | replace: "rust_backend", crate_name }}

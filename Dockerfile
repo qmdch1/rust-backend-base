@@ -1,3 +1,4 @@
+# {% capture body %}
 # Build stage
 FROM rust:1.82-alpine AS builder
 
@@ -39,3 +40,4 @@ HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
     CMD wget --no-verbose --tries=1 --spider http://localhost:8080/api/v1/health || exit 1
 
 CMD ["./rust-backend-base"]
+# {% endcapture %}{{ body | replace: "Rust Backend Base", project-name | replace: "rust-backend-base", project-name | replace: "rust_backend_base", crate_name | replace: "rust-backend", project-name | replace: "rust_backend", crate_name }}

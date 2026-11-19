@@ -1,7 +1,21 @@
+<!-- {% capture body %} -->
 # Rust Backend Base
 
 Production-ready Rust 백엔드 보일러플레이트. 업계 표준 기술 스택으로 구성되어 있어 클론 후 바로 백엔드 개발을 시작할 수 있습니다.
 
+<!-- {% if false %} -->
+## 템플릿으로 새 프로젝트 만들기
+
+[cargo-generate](https://github.com/cargo-generate/cargo-generate)로 이름을 바꾼 새 프로젝트를 만들 수 있습니다.
+
+```bash
+cargo install cargo-generate
+cargo generate qmdch1/rust-backend-base --name my-service
+```
+
+크레이트 이름, Dockerfile 실행 파일, K8s 리소스·네임스페이스, Jenkinsfile, 배포 스크립트, DB 이름이 `my-service` / `my_service`로 바뀝니다. 이 저장소는 그대로 클론해서 빌드할 수도 있으며, 템플릿 처리 방식은 [`cargo-generate.toml`](cargo-generate.toml)에 설명되어 있습니다.
+
+<!-- {% endif %} -->
 ## Deploy
 
 > **Ubuntu 22.04 LTS / 24.04 LTS** 기준 | PostgreSQL, Valkey(Redis)는 별도 구성 전제
@@ -291,3 +305,4 @@ Docker Hub 대신 서버에 **로컬 레지스트리**(`localhost:5000`)를 사�
 - **Testing**: `reqwest` + `sqlx::test` (dev-dependencies에 포함됨)
 - **gRPC**: `tonic` 크레이트
 - **Message Queue**: `lapin` (RabbitMQ) 또는 `rdkafka` (Kafka)
+<!-- {% endcapture %}{{ body | replace: "Rust Backend Base", project-name | replace: "rust-backend-base", project-name | replace: "rust_backend_base", crate_name | replace: "rust-backend", project-name | replace: "rust_backend", crate_name }} -->

@@ -1,6 +1,8 @@
+# {% capture body %}
 apiVersion: v1
 kind: Namespace
 metadata:
   name: rust-backend
   labels:
     app.kubernetes.io/part-of: rust-backend
+# {% endcapture %}{{ body | replace: "Rust Backend Base", project-name | replace: "rust-backend-base", project-name | replace: "rust_backend_base", crate_name | replace: "rust-backend", project-name | replace: "rust_backend", crate_name }}

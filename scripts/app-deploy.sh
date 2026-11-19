@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# {% capture body %}
 # =============================================================================
 # 앱 배포 스크립트 (반복 실행)
 # .env 파일 기반으로 Docker 이미지 빌드 → 로컬 레지스트리 push → K8s 배포
@@ -107,3 +108,4 @@ echo "  kubectl -n ${NAMESPACE} get pods"
 echo "  kubectl -n ${NAMESPACE} get svc"
 echo "  kubectl -n ${NAMESPACE} logs -l app.kubernetes.io/name=rust-backend -f"
 echo ""
+# {% endcapture %}{{ body | replace: "Rust Backend Base", project-name | replace: "rust-backend-base", project-name | replace: "rust_backend_base", crate_name | replace: "rust-backend", project-name | replace: "rust_backend", crate_name }}

@@ -1,3 +1,4 @@
+# {% capture body %}
 # Local development only - PostgreSQL + Redis
 # Production deployment uses Kubernetes (see k8s/)
 services:
@@ -34,3 +35,4 @@ services:
 volumes:
   postgres_data:
   valkey_data:
+# {% endcapture %}{{ body | replace: "Rust Backend Base", project-name | replace: "rust-backend-base", project-name | replace: "rust_backend_base", crate_name | replace: "rust-backend", project-name | replace: "rust_backend", crate_name }}
