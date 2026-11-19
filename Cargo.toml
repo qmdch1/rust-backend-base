@@ -4,6 +4,7 @@ name = "rust-backend-base"
 version = "0.1.0"
 edition = "2024"
 description = "Production-ready Rust backend base with industry-standard stack"
+license = "MIT"
 # {% if false %}
 repository = "https://github.com/qmdch1/rust-backend-base"
 # {% endif %}
